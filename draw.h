@@ -15,8 +15,8 @@ void draw_towers();
 //Drawing disks
 void draw_disks();
 
-//Drawing hammer that hits the platform
-void draw_hammer();
+//Drawing figure that hits the platform
+void draw_figure();
 
 //Setting material for objects
 void set_material(char id);

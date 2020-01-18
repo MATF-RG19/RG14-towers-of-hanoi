@@ -177,42 +177,60 @@ void draw_disks() {
 
 }
 
-void draw_hammer() {
+void draw_figure() {
 
 	glPushMatrix();
 
-		//Positioning hammer
-		glTranslatef(0, -1.7, 0); // y pos: platform height + hammer width/2 => 1 + 0.7
-		if(src == &B) {
-			glTranslatef(TOWER_DISTANCE, 0, 0); //Moving to the right to hit tower B
-		}
-		glRotatef(h_alpha, 0, 0, 1); //Rotating hammer to its position
-
-		//Drawing hammer head
-		glBindTexture(GL_TEXTURE_2D, hammer_tex);
-		GLUquadricObj *obj = gluNewQuadric();
-		gluQuadricTexture(obj, hammer_tex);
+		glTranslatef(0 + figure_xpos, -3 + figure_ypos, 0);
 		set_material('w');
-
+    
+		//Head
 		glPushMatrix();
-			glTranslatef(0.7, -TOWER_DISTANCE, 0);
-			glRotatef(-90, 0, 1, 0);
-			gluCylinder(obj, 0.5, 0.5, 1.4, 20, 20);
-		glPopMatrix();
-		glBindTexture(GL_TEXTURE_2D, 0);
+    		glTranslatef(0, 0.3, 0);
+			glutSolidSphere(0.3, 100, 100);
+    	glPopMatrix();
+    
+		//Body
+    	glPushMatrix();
+			glTranslatef(0, (-3*0.3)/2, 0);   
+			glScalef(0.8, 3*0.3, 0.2);
+			glutSolidCube(1);
+		glPopMatrix();  
 
-		//Drawing hammer handle
-		glBindTexture(GL_TEXTURE_2D, handle_tex);
-		gluQuadricTexture(obj, handle_tex);
+		GLUquadricObj *obj = gluNewQuadric();
 
+		//Left leg
+		glPushMatrix(); 
+			glTranslatef(-0.2, -6*0.3, 0);   
+			glRotatef(-90,1,0,0);
+         	gluCylinder(obj, 0.13, 0.13, 3*0.3, 20, 20);  
+        glPopMatrix();
+		
+		//Right leg
+		glPushMatrix(); 
+			glTranslatef(0.2, -6*0.3, 0);   
+			glRotatef(-90,1,0,0);
+         	gluCylinder(obj, 0.13, 0.13, 3*0.3, 20, 20); 
+        glPopMatrix();
+
+		//Left arm
 		glPushMatrix();
-			glTranslatef(0, -TOWER_DISTANCE, 0);
-			glRotatef(-90, 1, 0, 0);
-			gluCylinder(obj, 0.1, 0.1, 2.5, 20, 20);
+			glTranslatef(-0.2 - 0.1, 0, 0);
+			glRotatef(160 + left_arm_rotation, 0, 0, 1);
+			glRotatef(-90,1,0,0);
+         	gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
 		glPopMatrix();
-
-	glBindTexture(GL_TEXTURE_2D, 0);
+		
+		//Right arm
+		glPushMatrix();
+			glTranslatef( 0.4/2 + 0.1, 0, 0);
+			glRotatef(-160, 0.0, 0.0, 1.0);
+			glRotatef(-90,1,0,0);
+         	gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
+		glPopMatrix();
+		
 	glPopMatrix();
+	
 }
 
 void set_material(char id) {

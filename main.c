@@ -87,7 +87,12 @@ void init() {
     //Initial values for rotation
     rotation = 180;
     rotation_parameter = 0;
-    h_alpha = 0; //Rotation angle for the hammer
+
+    //Initializing figure movement variables
+    figure_xpos = 0;
+    figure_ypos = 0;
+    left_arm_rotation = 0;
+    figure_active = 0;
 
     hanoi_active = 0; //Automatic solving is not active
 
@@ -96,8 +101,7 @@ void init() {
     //Loading textures
     load_background();
     load_platform_tex();
-    load_hammer_tex();
-    load_handle_tex();
+
 }
 
 void restart() {
@@ -123,7 +127,8 @@ static void on_display(void) {
     draw_background(); //Drawing background
     draw_towers(); //Drawing towers
     draw_disks(); //Drawing disks
-    draw_hammer(); //Drawing hammer
+
+    draw_figure(); //Drawing figure
 
     //Printing message to the screen
     show_message();
@@ -166,14 +171,13 @@ static void on_keyboard(unsigned char key, int x, int y) {
         case 27: //ESC
             glDeleteTextures(1, &bg_tex);
             glDeleteTextures(1, &platform_tex);
-            glDeleteTextures(1, &handle_tex);
-            glDeleteTextures(1, &hammer_tex);
             exit(0);
             break;
         //restart
         case 'R':
         case 'r':
             move_ongoing = 0;
+            figure_active = 0;
             restart();
             break;
         // Stopping move
@@ -292,5 +296,5 @@ void undo_move() {
 
 //Checking if any animation is active
 int animation_active() {
-    return hanoi_active || move_ongoing || hammer_active;
+    return hanoi_active || move_ongoing || figure_active;
 }

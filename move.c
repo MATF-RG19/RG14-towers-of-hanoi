@@ -20,7 +20,7 @@ void initialize_move() {
     }
 
     //Activating hammer and bouncing
-    hammer_active = 1;
+    figure_active = 1;
     bounce = BOUNCE_UP;
     bounce_counter = 0;
 
@@ -41,8 +41,8 @@ void on_timer(int value) {
         return;
 
     //Performing selected move
-    if (hammer_active)
-        hammer_hit();
+    if (figure_active)
+        figure_hit();
     if (move_ongoing)
         perform_move();
 
@@ -50,14 +50,14 @@ void on_timer(int value) {
     glutPostRedisplay();
 
     //If the move is still active, timer function is called
-    if (hammer_active || move_ongoing) {
+    if (figure_active || move_ongoing) {
         glutTimerFunc(TIMER_INTERVAL, on_timer, TIMER_ID);
     }
 
     //If automatic solving is active and current move is done, initialize next move,
     //that was set up in move_complete function
     //Code placed here so that no multiple timer callbacks exist
-    if(hanoi_active && !move_ongoing && !hammer_active) {
+    if(hanoi_active && !move_ongoing && !figure_active) {
         initialize_move();
     }
 }
@@ -68,7 +68,9 @@ void perform_move() {
     //If the tower is empty, decrementing top would cause error
     int dest_top = (dest->top == 0) ? 0 : dest->top - 1;
 
-    if(bounce) { bouncing(); }
+    if(bounce) { 
+        bouncing(); 
+    }
 
     //moving disk up until it reaches top of the tower
     if(moving_up) {
@@ -157,33 +159,32 @@ void move_complete() {
     }
 }
 
-void hammer_hit() {
-    //Rotating hammer to left
-    if (src == &A || src == &B) {
-        if(!move_ongoing) {
-            h_alpha -= 5;
-            if(h_alpha <= -90.0)
-                move_ongoing = 1;
-        }
-        else {
-            h_alpha += 6;
-        }
-        if (h_alpha == 0)
-            hammer_active = 0;
+
+void figure_hit() {
+    
+    if (src == &A) {
+        figure_xpos = -TOWER_DISTANCE;
+    }
+    else if (src == &B) {
+        figure_xpos = 0;
+    }
+    else if (src == &C) {
+        figure_xpos = TOWER_DISTANCE;
     }
 
-    //Rotating hammer to right
-    else if (src == &C) {
-        if(!move_ongoing) {
-            h_alpha += 5;
-            if(h_alpha >= 90.0)
-                move_ongoing = 1;
-        }
-        else {
-            h_alpha -= 6;
-        }
-        if (h_alpha == 0)
-            hammer_active = 0;
+    if(!move_ongoing) {
+        left_arm_rotation = -160;
+        figure_ypos += speed;
+        if(figure_ypos >= 1.1)
+            move_ongoing = 1;
+    }
+    else {
+        figure_ypos -= speed;
+    }
+
+    if (figure_ypos <= 0) {
+        figure_active = 0;
+        left_arm_rotation = 0;
     }
 }
 

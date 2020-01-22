@@ -165,3 +165,26 @@ void load_platform_tex() {
 
     image_done(image);
 }
+
+void load_logo_tex() {
+    //Initializing Image structure
+    Image *image = image_init(0, 0);
+
+    //Creating texture for platform
+    image_read(image, "Textures/logo.bmp");
+
+    //Setting texture parameters
+    glGenTextures(1, &logo_tex);
+
+    glBindTexture(GL_TEXTURE_2D, logo_tex); //Binding texture to a pointer
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                 image->width, image->height, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+    glBindTexture(GL_TEXTURE_2D, 0); //unbinding
+
+    image_done(image);
+}

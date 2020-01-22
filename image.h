@@ -11,6 +11,7 @@
 
 GLuint bg_tex;
 GLuint platform_tex;
+GLuint logo_tex;
 
 
 //Structures that represent bitmap headers
@@ -56,5 +57,8 @@ void load_background();
 
 //Load platform texture
 void load_platform_tex();
+
+//Load superman logo tex
+void load_logo_tex();
 
 #endif

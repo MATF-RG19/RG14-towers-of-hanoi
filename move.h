@@ -22,9 +22,9 @@ float rotation;     //Disk rotation angle
 float rotation_parameter; //Disk rotation angle increment
 float distance;     // Distance from source to destination tower
 
-int figure_active;  //Indicator that hammer is moving to hit the platform
-float figure_xpos;
-float figure_ypos;
+int superman_active;  //Indicator that hammer is moving to hit the platform
+float superman_xpos;
+float superman_ypos;
 float left_arm_rotation;
 
 
@@ -45,7 +45,7 @@ void perform_move();
 void move_complete();
 
 //Hitting source tower with hammer
-void figure_hit();
+void superman_hit();
 
 //Bounce disks after the hammer hit
 void bouncing();

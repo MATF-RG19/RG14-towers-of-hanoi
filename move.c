@@ -20,7 +20,7 @@ void initialize_move() {
     }
 
     //Activating hammer and bouncing
-    figure_active = 1;
+    superman_active = 1;
     bounce = BOUNCE_UP;
     bounce_counter = 0;
 
@@ -41,8 +41,8 @@ void on_timer(int value) {
         return;
 
     //Performing selected move
-    if (figure_active)
-        figure_hit();
+    if (superman_active)
+        superman_hit();
     if (move_ongoing)
         perform_move();
 
@@ -50,14 +50,14 @@ void on_timer(int value) {
     glutPostRedisplay();
 
     //If the move is still active, timer function is called
-    if (figure_active || move_ongoing) {
+    if (superman_active || move_ongoing) {
         glutTimerFunc(TIMER_INTERVAL, on_timer, TIMER_ID);
     }
 
     //If automatic solving is active and current move is done, initialize next move,
     //that was set up in move_complete function
     //Code placed here so that no multiple timer callbacks exist
-    if(hanoi_active && !move_ongoing && !figure_active) {
+    if(hanoi_active && !move_ongoing && !superman_active) {
         initialize_move();
     }
 }
@@ -160,30 +160,30 @@ void move_complete() {
 }
 
 
-void figure_hit() {
+void superman_hit() {
     
     if (src == &A) {
-        figure_xpos = -TOWER_DISTANCE;
+        superman_xpos = -TOWER_DISTANCE;
     }
     else if (src == &B) {
-        figure_xpos = 0;
+        superman_xpos = 0;
     }
     else if (src == &C) {
-        figure_xpos = TOWER_DISTANCE;
+        superman_xpos = TOWER_DISTANCE;
     }
 
     if(!move_ongoing) {
         left_arm_rotation = -160;
-        figure_ypos += speed;
-        if(figure_ypos >= 1.1)
+        superman_ypos += speed;
+        if(superman_ypos >= 1.1)
             move_ongoing = 1;
     }
     else {
-        figure_ypos -= speed;
+        superman_ypos -= speed;
     }
 
-    if (figure_ypos <= 0) {
-        figure_active = 0;
+    if (superman_ypos <= 0) {
+        superman_active = 0;
         left_arm_rotation = 0;
     }
 }

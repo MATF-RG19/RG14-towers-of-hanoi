@@ -15,8 +15,8 @@ void draw_towers();
 //Drawing disks
 void draw_disks();
 
-//Drawing figure that hits the platform
-void draw_figure();
+//Drawing superman
+void draw_superman();
 
 //Setting material for objects
 void set_material(char id);

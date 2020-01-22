@@ -8,16 +8,13 @@ void draw_background() {
     glBindTexture(GL_TEXTURE_2D, bg_tex);
 
     glPushMatrix();
-    	//Rotating background image in front of camera
-	    glRotatef(-4.8, 1, 0, 0);
-
 	    //Drawing background
 	    glBegin(GL_QUADS);
 	        glNormal3f(0, 0, 1);
-	        glTexCoord2f(0, 0); glVertex3f(-15, -15, -2);
-	        glTexCoord2f(1, 0); glVertex3f(15, -15, -2);
-	        glTexCoord2f(1, 1); glVertex3f(15, 15, -2);
-	        glTexCoord2f(0, 1); glVertex3f(-15, 15, -2);
+	        glTexCoord2f(0, 0); glVertex3f(-15, -15, -3);
+	        glTexCoord2f(1, 0); glVertex3f(15, -15, -3);
+	        glTexCoord2f(1, 1); glVertex3f(15, 15, -3);
+	        glTexCoord2f(0, 1); glVertex3f(-15, 15, -3);
 	    glEnd();
     glPopMatrix();
 
@@ -177,25 +174,73 @@ void draw_disks() {
 
 }
 
-void draw_figure() {
+void draw_superman() {
 
 	glPushMatrix();
+		glTranslatef(0 + superman_xpos, -3 + superman_ypos, 0);
 
-		glTranslatef(0 + figure_xpos, -3 + figure_ypos, 0);
-		set_material('w');
-    
 		//Head
+		set_material('s');
 		glPushMatrix();
-    		glTranslatef(0, 0.3, 0);
+			glTranslatef(0, 0.3, 0);
 			glutSolidSphere(0.3, 100, 100);
-    	glPopMatrix();
-    
+		glPopMatrix();
+	
 		//Body
-    	glPushMatrix();
-			glTranslatef(0, (-3*0.3)/2, 0);   
-			glScalef(0.8, 3*0.3, 0.2);
-			glutSolidCube(1);
-		glPopMatrix();  
+		//Front
+		glBindTexture(GL_TEXTURE_2D, logo_tex);
+		set_material('w');
+		
+		glBegin(GL_QUADS);
+			glNormal3f(0, 0, 1);
+			glTexCoord2f(0, 0); glVertex3f(-0.4, -0.9, 0.2);
+			glTexCoord2f(1, 0);	glVertex3f(0.4, -0.9, 0.2);
+			glTexCoord2f(1, 1);	glVertex3f(0.4, 0, 0.2);
+			glTexCoord2f(0, 1);	glVertex3f(-0.4, 0, 0.2);
+		glEnd();
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+	
+		set_material('d');
+		glBegin(GL_QUADS);
+	
+			//Right
+			glNormal3f(1, 0, 0);
+			glVertex3f(0.4, -0.9, -0.2);
+			glVertex3f(0.4, 0, -0.2);
+			glVertex3f(0.4, 0, 0.2);
+			glVertex3f(0.4, -0.9, 0.2);
+
+			//Back
+			glNormal3f(0, 0, -1);
+			glVertex3f(-0.4, -0.9, -0.2);
+			glVertex3f(-0.4, 0, -0.2);
+			glVertex3f(0.4, 0, -0.2);
+			glVertex3f(0.4, -0.9, -0.2);
+
+			//Left
+			glNormal3f(-1, 0, 0);
+			glVertex3f(-0.4, -0.9, -0.2);
+			glVertex3f(-0.4, -0.9, 0.2);
+			glVertex3f(-0.4, 0, 0.2);
+			glVertex3f(-0.4, 0, -0.2);
+
+			//Top
+			glNormal3f(0, 1, 0);
+			glVertex3f(-0.4, 0, -0.2);
+			glVertex3f(-0.4, 0, 0.2);
+			glVertex3f(0.4, 0, 0.2);
+			glVertex3f(0.4, 0, -0.2);
+
+			//Bottom
+			glNormal3f(0, -1, 0);
+			glVertex3f(-0.4, -0.9, -0.2);
+			glVertex3f(-0.4, -0.9, 0.2);
+			glVertex3f(0.4, -0.9, 0.2);
+			glVertex3f(0.4, -0.9, -0.2);			
+
+		glEnd(); //GL_QUADS
+	
 
 		GLUquadricObj *obj = gluNewQuadric();
 
@@ -203,22 +248,22 @@ void draw_figure() {
 		glPushMatrix(); 
 			glTranslatef(-0.2, -6*0.3, 0);   
 			glRotatef(-90,1,0,0);
-         	gluCylinder(obj, 0.13, 0.13, 3*0.3, 20, 20);  
-        glPopMatrix();
+			gluCylinder(obj, 0.13, 0.13, 3*0.3, 20, 20);  
+		glPopMatrix();
 		
 		//Right leg
 		glPushMatrix(); 
 			glTranslatef(0.2, -6*0.3, 0);   
 			glRotatef(-90,1,0,0);
-         	gluCylinder(obj, 0.13, 0.13, 3*0.3, 20, 20); 
-        glPopMatrix();
+			gluCylinder(obj, 0.13, 0.13, 3*0.3, 20, 20); 
+		glPopMatrix();
 
-		//Left arm
+		//Left arm	
 		glPushMatrix();
 			glTranslatef(-0.2 - 0.1, 0, 0);
 			glRotatef(160 + left_arm_rotation, 0, 0, 1);
 			glRotatef(-90,1,0,0);
-         	gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
+			gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
 		glPopMatrix();
 		
 		//Right arm
@@ -226,9 +271,19 @@ void draw_figure() {
 			glTranslatef( 0.4/2 + 0.1, 0, 0);
 			glRotatef(-160, 0.0, 0.0, 1.0);
 			glRotatef(-90,1,0,0);
-         	gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
+			gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
 		glPopMatrix();
 		
+		//Cape
+		set_material('r');
+		glBegin(GL_QUADS);
+			glNormal3f(0, 0, 1);
+			glVertex3f(-0.6, -1.5, -0.4);
+			glVertex3f( 0.6, -1.5, -0.4);
+			glVertex3f( 0.4, 0.0, -0.2);
+			glVertex3f(-0.4, 0.0, -0.2);
+		glEnd();
+			
 	glPopMatrix();
 	
 }
@@ -253,11 +308,26 @@ void set_material(char id) {
             diffuse_coeffs[1] = 0.8;
             diffuse_coeffs[2] = 0.8;
             break;
+		case 'd': //dark blue color
+			diffuse_coeffs[0] = 0.0;
+            diffuse_coeffs[1] = 0.13;
+            diffuse_coeffs[2] = 0.41;
+			break;
+		case 's': //skin color
+			diffuse_coeffs[0] = 0.98;
+            diffuse_coeffs[1] = 0.83;
+            diffuse_coeffs[2] = 0.64;
+			break;
+		case 'r': //red color
+			diffuse_coeffs[0] = 1.0;
+            diffuse_coeffs[1] = 0.0;
+            diffuse_coeffs[2] = 0.0;
+			break;
     }
 
     //Material
-    glMaterialfv(GL_FRONT, GL_AMBIENT, ambient_coeffs);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_coeffs);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, specular_coeffs);
-    glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient_coeffs);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_coeffs);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_coeffs);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
 }

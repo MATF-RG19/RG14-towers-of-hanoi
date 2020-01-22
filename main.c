@@ -88,11 +88,11 @@ void init() {
     rotation = 180;
     rotation_parameter = 0;
 
-    //Initializing figure movement variables
-    figure_xpos = 0;
-    figure_ypos = 0;
+    //Initializing superman movement variables
+    superman_xpos = 0;
+    superman_ypos = 0;
     left_arm_rotation = 0;
-    figure_active = 0;
+    superman_active = 0;
 
     hanoi_active = 0; //Automatic solving is not active
 
@@ -101,6 +101,7 @@ void init() {
     //Loading textures
     load_background();
     load_platform_tex();
+    load_logo_tex();
 
 }
 
@@ -118,7 +119,7 @@ static void on_display(void) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(
-        0, 2, 10,
+        0, 1, 10,
         0, 0, 0,
         0, 1, 0
     );
@@ -127,8 +128,7 @@ static void on_display(void) {
     draw_background(); //Drawing background
     draw_towers(); //Drawing towers
     draw_disks(); //Drawing disks
-
-    draw_figure(); //Drawing figure
+    draw_superman(); //Drawing superman
 
     //Printing message to the screen
     show_message();
@@ -171,13 +171,14 @@ static void on_keyboard(unsigned char key, int x, int y) {
         case 27: //ESC
             glDeleteTextures(1, &bg_tex);
             glDeleteTextures(1, &platform_tex);
+            glDeleteTextures(1, &logo_tex);
             exit(0);
             break;
         //restart
         case 'R':
         case 'r':
             move_ongoing = 0;
-            figure_active = 0;
+            superman_active = 0;
             restart();
             break;
         // Stopping move
@@ -266,7 +267,7 @@ void show_message() {
 
     set_material('b');
     glPushMatrix();
-        glTranslatef(-2, -2, 5);
+        glTranslatef(-2, -2.25, 5);
         glRasterPos3f(0, 4.9, 0.5);
 
         for (c=message; *c != '\0'; c++)
@@ -277,10 +278,11 @@ void show_message() {
     //Printing tower names to the screen
     char letters[] = {'A', 'B', 'C', '\0'};
     float distance =-1.35;
+    set_material('d');
 
     glPushMatrix();
         for (c=letters; *c != '\0'; c++){
-            glRasterPos3f(distance, 0.4, 5);
+            glRasterPos3f(distance, 0, 5);
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *c);
             distance += 1.3;
         }
@@ -296,5 +298,5 @@ void undo_move() {
 
 //Checking if any animation is active
 int animation_active() {
-    return hanoi_active || move_ongoing || figure_active;
+    return hanoi_active || move_ongoing || superman_active;
 }

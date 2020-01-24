@@ -88,7 +88,7 @@ void init() {
     rotation = 180;
     rotation_parameter = 0;
 
-    //Initializing superman movement variables
+    //Initializing superman move variables
     superman_xpos = 0;
     superman_ypos = 0;
     left_arm_rotation = 0;
@@ -119,7 +119,7 @@ static void on_display(void) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(
-        0, 1, 10,
+        0, 1, 11,
         0, 0, 0,
         0, 1, 0
     );

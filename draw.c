@@ -11,10 +11,10 @@ void draw_background() {
 	    //Drawing background
 	    glBegin(GL_QUADS);
 	        glNormal3f(0, 0, 1);
-	        glTexCoord2f(0, 0); glVertex3f(-15, -15, -3);
-	        glTexCoord2f(1, 0); glVertex3f(15, -15, -3);
-	        glTexCoord2f(1, 1); glVertex3f(15, 15, -3);
-	        glTexCoord2f(0, 1); glVertex3f(-15, 15, -3);
+	        glTexCoord2f(0, 0); glVertex3f(-16, -16, -3);
+	        glTexCoord2f(1, 0); glVertex3f(16, -16, -3);
+	        glTexCoord2f(1, 1); glVertex3f(16, 16, -3);
+	        glTexCoord2f(0, 1); glVertex3f(-16, 16, -3);
 	    glEnd();
     glPopMatrix();
 
@@ -177,7 +177,7 @@ void draw_disks() {
 void draw_superman() {
 
 	glPushMatrix();
-		glTranslatef(0 + superman_xpos, -3 + superman_ypos, 0);
+		glTranslatef(0 + superman_xpos, -3.5 + superman_ypos, 0);
 
 		//Head
 		set_material('s');
@@ -199,10 +199,9 @@ void draw_superman() {
 			glTexCoord2f(0, 1);	glVertex3f(-0.4, 0, 0.2);
 		glEnd();
 		glBindTexture(GL_TEXTURE_2D, 0);
-
-	
-		set_material('d');
-		glBegin(GL_QUADS);
+		
+		
+		/*glBegin(GL_QUADS);
 	
 			//Right
 			glNormal3f(1, 0, 0);
@@ -240,7 +239,25 @@ void draw_superman() {
 			glVertex3f(0.4, -0.9, -0.2);			
 
 		glEnd(); //GL_QUADS
-	
+		*/
+
+		//The rest of the body is a scaled cube without front side
+		set_material('d');
+		glPushMatrix();
+
+			double clip_plane[] = {0, 0, -1, 0.199};
+
+			glClipPlane(GL_CLIP_PLANE0, clip_plane);
+			glEnable(GL_CLIP_PLANE0);
+
+			glTranslatef(0, -0.45, 0);
+			glScalef(0.8, 0.9, 0.4);
+			glutSolidCube(1);
+
+			glDisable(GL_CLIP_PLANE0);
+			
+		glPopMatrix();
+
 
 		GLUquadricObj *obj = gluNewQuadric();
 
@@ -260,7 +277,7 @@ void draw_superman() {
 
 		//Left arm	
 		glPushMatrix();
-			glTranslatef(-0.2 - 0.1, 0, 0);
+			glTranslatef(-0.2 - 0.1, -0.02, 0);
 			glRotatef(160 + left_arm_rotation, 0, 0, 1);
 			glRotatef(-90,1,0,0);
 			gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
@@ -268,7 +285,7 @@ void draw_superman() {
 		
 		//Right arm
 		glPushMatrix();
-			glTranslatef( 0.4/2 + 0.1, 0, 0);
+			glTranslatef( 0.4/2 + 0.1, -0.02, 0);
 			glRotatef(-160, 0.0, 0.0, 1.0);
 			glRotatef(-90,1,0,0);
 			gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);

@@ -23,6 +23,7 @@ float rotation_parameter; //Disk rotation angle increment
 float distance;     // Distance from source to destination tower
 
 int superman_active;  //Indicator that hammer is moving to hit the platform
+int superman_fly;
 float superman_xpos;
 float superman_ypos;
 float left_arm_rotation;

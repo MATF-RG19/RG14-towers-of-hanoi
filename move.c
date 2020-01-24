@@ -19,15 +19,16 @@ void initialize_move() {
         move_count++;
     }
 
-    //Activating hammer and bouncing
+    //Activating superman and bouncing
     superman_active = 1;
+    superman_fly = 0;
     bounce = BOUNCE_UP;
     bounce_counter = 0;
 
     distance = dest->tower_pos_x - src->tower_pos_x; //Distance between source and destination towers
 
     //Calculating increment of disk rotation based on tower distance
-    //For closer tower disk rotates semi-circle, for further tower, disk rotates full circle
+    //For closer tower, disk rotates semi-circle, for further tower, disk rotates full circle
     float rotation_range = (abs(distance) < 2.6) ? 180 : 360;
     rotation_parameter = (rotation_range * speed) / distance;
 
@@ -55,8 +56,7 @@ void on_timer(int value) {
     }
 
     //If automatic solving is active and current move is done, initialize next move,
-    //that was set up in move_complete function
-    //Code placed here so that no multiple timer callbacks exist
+    //which was set up in move_complete function
     if(hanoi_active && !move_ongoing && !superman_active) {
         initialize_move();
     }
@@ -161,31 +161,62 @@ void move_complete() {
 
 
 void superman_hit() {
+
+    //Move to the source tower
+    if (src == &A && !superman_fly) {
+        superman_xpos -= speed;
+        if (superman_xpos <= A.tower_pos_x) {
+            superman_xpos = A.tower_pos_x;
+            superman_fly = 1;
+        }
+    }
+    else if (src == &B && !superman_fly) {
+
+        if (superman_xpos <= B.tower_pos_x) { //move to the right
+            superman_xpos += speed;
+            if (superman_xpos >= B.tower_pos_x) {
+                superman_xpos = B.tower_pos_x;
+                superman_fly = 1;
+            }
+        }
+        else { //move to the left
+            superman_xpos -= speed;
+            if (superman_xpos <= B.tower_pos_x) {
+                superman_xpos = B.tower_pos_x;
+                superman_fly = 1;
+            }
+        }
+    }
+    else if (src == &C && !superman_fly) {
+        superman_xpos += speed;
+        if (superman_xpos >= C.tower_pos_x) {
+            superman_xpos = C.tower_pos_x;
+            superman_fly = 1;
+        }
+    }
+
+    //Moving up and down
+    if(superman_fly) {
+        //Moving up to hit the platform
+        if(!move_ongoing) {
+            left_arm_rotation = -160;
+            superman_ypos += speed;
+            if(superman_ypos >= 1.6)
+                move_ongoing = 1;
+        }
+        else { //Moving down to start position
+            superman_ypos -= speed;
     
-    if (src == &A) {
-        superman_xpos = -TOWER_DISTANCE;
-    }
-    else if (src == &B) {
-        superman_xpos = 0;
-    }
-    else if (src == &C) {
-        superman_xpos = TOWER_DISTANCE;
-    }
-
-    if(!move_ongoing) {
-        left_arm_rotation = -160;
-        superman_ypos += speed;
-        if(superman_ypos >= 1.1)
-            move_ongoing = 1;
-    }
-    else {
-        superman_ypos -= speed;
+            if (superman_ypos <= 0) {
+                superman_ypos = 0;
+                superman_active = 0;
+                superman_fly = 0;
+                left_arm_rotation = 0;
+            }
+        }
     }
 
-    if (superman_ypos <= 0) {
-        superman_active = 0;
-        left_arm_rotation = 0;
-    }
+    
 }
 
 void bouncing() {

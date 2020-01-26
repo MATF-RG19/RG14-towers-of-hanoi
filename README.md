@@ -16,11 +16,15 @@ The Tower of Hanoi is a mathematical game or puzzle. It consists of three towers
 
 # Installation:
 
-* Prerequisites: OpenGL/GLUT libraries installes
+* Prerequisites: OpenGL/GLUT libraries installed
 
-* Run make from the project directory.
-* run ./towers_of_hanoi
-* _if you want to play with custom number of disks, run ./towers_of_hanoi n (where n is the desired number of disks)_
+```shell
+git clone https://github.com/MATF-RG19/RG14-towers-of-hanoi
+cd RG14-towers-of-hanoi
+make
+./towers_of_hanoi
+```
+* _if you want to play with custom number of disks, run ```./towers_of_hanoi n ``` (where n is the desired number of disks)_
 
 # Instructions:
 

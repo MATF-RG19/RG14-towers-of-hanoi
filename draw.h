@@ -15,7 +15,7 @@ void draw_towers();
 //Drawing disks
 void draw_disks();
 
-//Drawing superman
+//Drawing Superman
 void draw_superman();
 
 //Setting material for objects

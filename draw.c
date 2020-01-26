@@ -1,6 +1,8 @@
 #include "draw.h"
 #include <math.h>
 
+#define PI 3.14159265359
+
 void draw_background() {
 
     //Background is not affected by lighting
@@ -76,6 +78,7 @@ void draw_towers() {
 	glEnd();
 	glPopMatrix();
 
+
 	//Drawing towers
 	GLUquadricObj *obj = gluNewQuadric();
     gluQuadricTexture(obj, platform_tex);
@@ -102,69 +105,77 @@ void draw_towers() {
 			gluCylinder(obj, TOWER_RADIUS, TOWER_RADIUS, TOWER_HEIGHT, 20, 20);
 		glPopMatrix();
 	glPopMatrix();
-    glBindTexture(GL_TEXTURE_2D, 0);
+    
+	glBindTexture(GL_TEXTURE_2D, 0); 
 }
 
 void draw_disks() {
-	//Setting blue color of the disks
+	//Setting blue color for the disks
     set_material('b');
 
 	glPushMatrix();
+
 		//Disks on the first tower
-		for(int i=0; i<A.top; i++) {
+		for(int i = 0; i < A.top; i++) {
 			glPushMatrix();
 				//Position of top disk, the one that is moving
 				if(src == &A && i == A.top - 1) {
 					glTranslatef(A.tower_pos_x + add_xpos, A.disk_pos_y[i], 0);
-					if (moving_side) {
-						//Rotating disk to destination tower using sinusoid function curve
-						//Transforming distance between towers to [0, pi] range
-						glTranslatef(0, sin(add_xpos*M_PI / distance), 0);
-					}
-					glRotatef(rotation, 0, 0, 1); //Spinning disk
+					
+					//Rotating disk to destination tower using sinusoid function curve
+					//Transforming distance between towers to [0, pi] range
+					glTranslatef(0, sin(add_xpos*PI / distance), 0);
+					//Spinning disk
+					glRotatef(rotation, 0, 0, 1);
 				}
-				else
-					glTranslatef(A.tower_pos_x, A.disk_pos_y[i], 0); //Positions of remaining disks
+				else { //Positions of remaining disks
+					glTranslatef(A.tower_pos_x, A.disk_pos_y[i], 0); 
+				}
+
 				glRotatef(90, 1, 0, 0);
 				glutSolidTorus(DISK_RADIUS, A.size[i], 20, 20);
 			glPopMatrix();
 		}
 
 		//Disks on the second tower
-		for(int i=0; i<B.top; i++) {
+		for(int i = 0; i < B.top; i++) {
 			glPushMatrix();
 				//Position of top disk, the one that is moving
 				if (src == &B && i == B.top - 1) {
 					glTranslatef(B.tower_pos_x + add_xpos, B.disk_pos_y[i], 0);
-					if (moving_side) {
-						//Rotating disk to destination tower using sinusoid function curve
-						//Transforming distance between towers to [0, pi] range
-						glTranslatef(0, sin(add_xpos*M_PI / distance), 0);
-					}
-					glRotatef(rotation, 0, 0, 1); //Spinning disk
+					
+					//Rotating disk to destination tower using sinusoid function curve
+					//Transforming distance between towers to [0, pi] range
+					glTranslatef(0, sin(add_xpos*PI / distance), 0);
+					//Spinning disk
+					glRotatef(rotation, 0, 0, 1); 
 				}
-				else
-					glTranslatef(B.tower_pos_x, B.disk_pos_y[i], 0); //Positions of remaining disks
+				else { //Positions of remaining disks
+					glTranslatef(B.tower_pos_x, B.disk_pos_y[i], 0);
+				}
+
 				glRotatef(90, 1, 0, 0);
 				glutSolidTorus(DISK_RADIUS, B.size[i], 20, 20);
 			glPopMatrix();
 		}
 
 		//Disks on the third tower
-		for(int i=0; i<C.top; i++) {
+		for(int i = 0; i < C.top; i++) {
 			glPushMatrix();
 				//Position of top disk, the one that is moving
 				if (src == &C && i == C.top - 1) {
 					glTranslatef(C.tower_pos_x + add_xpos, C.disk_pos_y[i], 0);
-					if (moving_side) {
-						//Rotating disk to destination tower using sinusoid function curve
-						//Transforming distance between towers to [0, pi] range
-						glTranslatef(0, sin(add_xpos*M_PI / distance), 0);
-					}
-					glRotatef(rotation, 0, 0, 1); //Spinning disk
+					
+					//Rotating disk to destination tower using sinusoid function curve
+					//Transforming distance between towers to [0, pi] range
+					glTranslatef(0, sin(add_xpos*PI / distance), 0);
+					//Spinning disk
+					glRotatef(rotation, 0, 0, 1);
 				}
-				else
-					glTranslatef(C.tower_pos_x, C.disk_pos_y[i], 0); //Positions of remaining disks
+				else { //Positions of remainig disks
+					glTranslatef(C.tower_pos_x, C.disk_pos_y[i], 0);
+				}
+
 				glRotatef(90, 1, 0, 0);
 				glutSolidTorus(DISK_RADIUS, C.size[i], 20, 20);
 			glPopMatrix();
@@ -175,19 +186,21 @@ void draw_disks() {
 }
 
 void draw_superman() {
+	//Dimensions computed using proportions 1:3:3 for head:torso:legs, where one unit is 0.3
 
 	glPushMatrix();
+		//Position for Superman
 		glTranslatef(0 + superman_xpos, -3.5 + superman_ypos, 0);
 
 		//Head
-		set_material('s');
+		set_material('s'); //skin color
 		glPushMatrix();
 			glTranslatef(0, 0.3, 0);
 			glutSolidSphere(0.3, 100, 100);
 		glPopMatrix();
 	
-		//Body
-		//Front
+		//Torso
+		//Front is a square with logo texture applied
 		glBindTexture(GL_TEXTURE_2D, logo_tex);
 		set_material('w');
 		
@@ -199,54 +212,14 @@ void draw_superman() {
 			glTexCoord2f(0, 1);	glVertex3f(-0.4, 0, 0.2);
 		glEnd();
 		glBindTexture(GL_TEXTURE_2D, 0);
-		
-		
-		/*glBegin(GL_QUADS);
-	
-			//Right
-			glNormal3f(1, 0, 0);
-			glVertex3f(0.4, -0.9, -0.2);
-			glVertex3f(0.4, 0, -0.2);
-			glVertex3f(0.4, 0, 0.2);
-			glVertex3f(0.4, -0.9, 0.2);
 
-			//Back
-			glNormal3f(0, 0, -1);
-			glVertex3f(-0.4, -0.9, -0.2);
-			glVertex3f(-0.4, 0, -0.2);
-			glVertex3f(0.4, 0, -0.2);
-			glVertex3f(0.4, -0.9, -0.2);
+		set_material('d'); //Dark blue color for the rest of the body
 
-			//Left
-			glNormal3f(-1, 0, 0);
-			glVertex3f(-0.4, -0.9, -0.2);
-			glVertex3f(-0.4, -0.9, 0.2);
-			glVertex3f(-0.4, 0, 0.2);
-			glVertex3f(-0.4, 0, -0.2);
-
-			//Top
-			glNormal3f(0, 1, 0);
-			glVertex3f(-0.4, 0, -0.2);
-			glVertex3f(-0.4, 0, 0.2);
-			glVertex3f(0.4, 0, 0.2);
-			glVertex3f(0.4, 0, -0.2);
-
-			//Bottom
-			glNormal3f(0, -1, 0);
-			glVertex3f(-0.4, -0.9, -0.2);
-			glVertex3f(-0.4, -0.9, 0.2);
-			glVertex3f(0.4, -0.9, 0.2);
-			glVertex3f(0.4, -0.9, -0.2);			
-
-		glEnd(); //GL_QUADS
-		*/
-
-		//The rest of the body is a scaled cube without front side
-		set_material('d');
+		//The rest of the torso is a scaled cube without front side
 		glPushMatrix();
 
+			//Clipping front side
 			double clip_plane[] = {0, 0, -1, 0.199};
-
 			glClipPlane(GL_CLIP_PLANE0, clip_plane);
 			glEnable(GL_CLIP_PLANE0);
 
@@ -255,7 +228,7 @@ void draw_superman() {
 			glutSolidCube(1);
 
 			glDisable(GL_CLIP_PLANE0);
-			
+
 		glPopMatrix();
 
 
@@ -277,22 +250,22 @@ void draw_superman() {
 
 		//Left arm	
 		glPushMatrix();
-			glTranslatef(-0.2 - 0.1, -0.02, 0);
-			glRotatef(160 + left_arm_rotation, 0, 0, 1);
+			glTranslatef(-0.2 - 0.1, -0.02, 0); //Adjusting for realistic display
+			glRotatef(160 + left_arm_rotation, 0, 0, 1); //Rotation when superman is going up
 			glRotatef(-90,1,0,0);
 			gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
 		glPopMatrix();
 		
 		//Right arm
 		glPushMatrix();
-			glTranslatef( 0.4/2 + 0.1, -0.02, 0);
+			glTranslatef( 0.4/2 + 0.1, -0.02, 0); //Adjusting for realistic display
 			glRotatef(-160, 0.0, 0.0, 1.0);
 			glRotatef(-90,1,0,0);
 			gluCylinder(obj, 0.1, 0.1, 3*0.3, 20, 20);
 		glPopMatrix();
 		
 		//Cape
-		set_material('r');
+		set_material('r'); //red color
 		glBegin(GL_QUADS);
 			glNormal3f(0, 0, 1);
 			glVertex3f(-0.6, -1.5, -0.4);

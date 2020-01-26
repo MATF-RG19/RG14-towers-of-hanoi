@@ -4,7 +4,7 @@
 #include "stack.h"
 #define MAX_MOVES 1024 // MAX_DISK_NUM = 10 --> MAX_MOVES = 2^10 - 1
 
-//Structure that keeps track of moves made by solving algorithm
+//Structure that keeps information for every move
 typedef struct _hmove {
         Stack *h_src; //Source tower
         Stack *h_dest; //Destination tower
@@ -15,9 +15,9 @@ Hmove hanoi_moves[MAX_MOVES];
 
 //Indicator that automatic solving is active
 int hanoi_active;
-//Move counters
-int m;
-int hanoi_counter;
+
+int m; //Total moves
+int hanoi_counter; //Moves completed
 
 //Initializing automatic solving
 void hanoi_solve();

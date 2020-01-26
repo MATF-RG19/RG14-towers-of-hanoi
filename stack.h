@@ -27,7 +27,7 @@ Stack A;
 Stack B;
 Stack C;
 
-//Pointers to the towers used in a disk movement
+//Pointers to the source and destination towers used in disk movement
 Stack *src;
 Stack *dest;
 

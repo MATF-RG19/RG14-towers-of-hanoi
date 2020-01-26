@@ -1,5 +1,5 @@
-//Code copied from http://poincare.matf.bg.ac.rs/~ivan/?content=rg;
-//Code translated to english and adapted for this project
+//Code copied from http://poincare.matf.bg.ac.rs/~ivan/?content=rg
+//and adapted for this project
 
 #ifndef _IMAGE_H_
 #define _IMAGE_H_
@@ -58,7 +58,7 @@ void load_background();
 //Load platform texture
 void load_platform_tex();
 
-//Load superman logo tex
+//Load Superman logo tex
 void load_logo_tex();
 
 #endif

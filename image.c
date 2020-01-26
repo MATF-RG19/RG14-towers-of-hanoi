@@ -1,5 +1,5 @@
-//Code copied from http://poincare.matf.bg.ac.rs/~ivan/?content=rg;
-//Code translated to english and adapted for this project
+//Code copied from http://poincare.matf.bg.ac.rs/~ivan/?content=rg
+//and adapted for this project
 
 #include "image.h"
 
@@ -170,7 +170,7 @@ void load_logo_tex() {
     //Initializing Image structure
     Image *image = image_init(0, 0);
 
-    //Creating texture for platform
+    //Creating texture for Superman logo
     image_read(image, "Textures/logo.bmp");
 
     //Setting texture parameters

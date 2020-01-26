@@ -1,6 +1,5 @@
 #include "algorithm.h"
 
-extern void on_timer();
 extern void initialize_move();
 
 void hanoi_solve() {
@@ -12,10 +11,11 @@ void hanoi_solve() {
 
         hanoi_counter = 0; //counter for how many moves are completed,
                            //used in perform_move() function in move.c file
+        
+        //Initializing first move
         src = hanoi_moves[hanoi_counter].h_src;
         dest = hanoi_moves[hanoi_counter].h_dest;
 
-        //Initializing first move
         initialize_move();
 }
 
